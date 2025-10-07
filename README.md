@@ -6,7 +6,7 @@ Tools to stochastically generate turbulent boundary-layer (TBL) velocity fieldsâ
 - [MATLAB package](#matlab-package)
 - [Python package](#python-package)
 
-## MATLAB package
+## MATLAB package (R2021b)
 <!-- brief blurb or link to docs/install/usage -->
 <!-- e.g., Installation, Quickstart, API, Examples -->
 
@@ -15,7 +15,7 @@ Tools to stochastically generate turbulent boundary-layer (TBL) velocity fieldsâ
 
 ### MATLAB files
 All the code files are in `Matlab/src` folder:
-- main.m: defining initial conditions.
+- main.m: defining initial conditions. The documentation for the code is provided in the files as comments.
 - SGVP: codes to generate velocity profiles
 - SGVF: codes to reorganize the generated profiles into correlated field
 - SGVorX: codes to add vortex cores.
