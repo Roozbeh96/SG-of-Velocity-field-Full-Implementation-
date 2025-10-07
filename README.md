@@ -14,7 +14,7 @@ Tools to stochastically generate turbulent boundary-layer (TBL) velocity fieldsâ
   <summary>Click to see the documentation for MATLAB package</summary>
 
 ### MATLAB files
-Full docs here...
+Code files are in `src` folder
 - Installation
 - Quickstart
 - API
