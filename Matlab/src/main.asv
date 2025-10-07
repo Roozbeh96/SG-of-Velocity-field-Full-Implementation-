@@ -18,11 +18,6 @@ comming soon
 %}
 
 
-%{
-The paramter of the wind tunnel (m1) are used. You can find details about
-this dataset in the papers.
-%}
-u_tau = 0.39; %[m/s]
-z_0 = 10;
-delta = 10;
-lambda = 10;
+%{The paramter of the wind tunnel (m1) are used. %}
+
+z_0 =
