@@ -36,3 +36,6 @@ Full docs here...
 - Examples
 
 </details>
+
+
+<img src = "Gen.gif">
