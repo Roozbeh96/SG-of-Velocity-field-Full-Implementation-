@@ -6,7 +6,7 @@ Tools to stochastically generate turbulent boundary-layer (TBL) velocity fieldsâ
 
 2. https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/stochastic-modal-velocity-field-in-roughwall-turbulence/800D97E60609F4FE4D92847CCDB1C7A0
 
-3. comming soon
+3. coming soon
 
 4. https://journals.ametsoc.org/view/journals/bams/105/1/BAMS-D-23-0066.1.xml
 
@@ -15,7 +15,7 @@ Tools to stochastically generate turbulent boundary-layer (TBL) velocity fieldsâ
 - [Python package](#python-package)
 - [Sample of stochatically generated velocity field](#Stochatically-generated-velocity-field)
 
-## MATLAB package (R2021b)
+## MATLAB package (R2025b)
 <!-- brief blurb or link to docs/install/usage -->
 <!-- e.g., Installation, Quickstart, API, Examples -->
 

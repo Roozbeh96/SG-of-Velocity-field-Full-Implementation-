@@ -3,7 +3,8 @@ classdef stochastic_generation < dynamicprops
     %and addition. The properties of the object is included as well.
     
     properties
-        u_tau, z_0, delta, lambda, nu, ro_uw, N_prof, GenProf, z
+        u_tau, z_0, delta, lambda, nu, ro_uw, N_prof, z,...
+            Gen_u_prof, Gen_w_prof, log_data_SGVP
     end
     
     methods
@@ -23,7 +24,11 @@ classdef stochastic_generation < dynamicprops
             %   Detailed explanation goes here
             obj.ro_uw = ro_uw;
             obj.N_prof = N;
-            obj.GenProf = SG_VelProf(obj);
+            % [obj.Gen_u_prof, obj.Gen_w_prof, obj.log_data_SGVP] =...
+            %     SG_VelProf(obj);
+            [obj.Gen_u_prof, obj.Gen_w_prof, obj.log_data_SGVP] =...
+                SG_VelProf_parl(obj);
+
             
         end
         function SGVF(obj)
