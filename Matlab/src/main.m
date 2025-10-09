@@ -21,6 +21,9 @@ comming soon
 %}
 
 
+root = fileparts(mfilename('fullpath'));  % project_root
+addpath(fullfile(root, 'utils')); %addpath for using functions in utils.
+
 %{
 The physical properties of the wind tunnel (m1) are used. You can find 
 details about this dataset in the papers.
@@ -33,10 +36,18 @@ nu = 1.57e-5; %[m^2/s]
 %{
 Define the wall-normal extent of the generated profiles which covers
 logarithmic layer. Log region starts from z+ = 30, continues till z/delta =
-0.3. The values here are conservatively considered. 
+0.3. The values here are conservatively considered. The wall-normal
+resolution of profiles is selected 0.4*lambda/10. Since average thickness
+of shear layer is 0.4*lambda, I divided it into 10 to sesolve the shear
+layer.
 %}
 z_min = 50*nu/u_tau; %[m]
 z_max = 0.25*delta; %[m]
+res_z = 0.4*lambda/10; %[m]
+% Let us generate an object. 
+
+Gen_sample = stochastic_generation(u_tau, z_0, delta, lambda, nu,z_min, z_max,...
+    res_z);
 
 %% Stochastic Generation of Velocity Profiles (SGVP)
 %{
@@ -52,12 +63,21 @@ The parameter we need here is the Pearson correlation coefficient between
 streamwise velocity and vertical velocity components. This parameter is
 necessary in Reynolds shear stress (covariance) reproduction. This value in
 the wind tunnel (m1) dataset is -0.4. You can tweak it w.r.t. your dataset.
+N_prof is number of profiles we want to generate.
 %}
 
 ro_uw = -0.4;
-
-
+N_prof = 1e3;
+Gen_sample.SGVP(ro_uw, N_prof)
 
 %% Stochastic Generation of Velocity Field (SGVF)
 
+Gen_sample.SGVF()
+
 %% Stochastic Generation of Vortex cores 
+
+Gen_sample.SGVorX()
+
+
+
+

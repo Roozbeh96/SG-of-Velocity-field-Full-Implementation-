@@ -1,0 +1,8 @@
+function Gen_Prof = SGVF(obj)
+%SGVF generate step like velocity profiles. Detail of line will explain in
+%the folllowing lines.
+
+U = genGaussCop(obj.ro_uw, 1e6);
+Gen
+end
+

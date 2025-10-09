@@ -1,6 +1,14 @@
-# Stochastic Generation of TBL Velocity Field
+# Stochastic Generation of 2D-TBL Velocity Field
 
-Tools to stochastically generate turbulent boundary-layer (TBL) velocity fields—from synthetic profile generation through reorganization and vortex addition. Available for MATLAB and Python.
+Tools to stochastically generate turbulent boundary-layer (TBL) velocity fields—from synthetic profile generation through reorganization and vortex addition. Available for MATLAB and Python. Find details about the model in the following paper:
+
+1. https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/stochastic-modelling-of-the-instantaneous-velocity-profile-in-roughwall-turbulent-boundary-layers/492F3CD03C8C3E7ED306E9117B848B5E
+
+2. https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/stochastic-modal-velocity-field-in-roughwall-turbulence/800D97E60609F4FE4D92847CCDB1C7A0
+
+3. comming soon
+
+4. https://journals.ametsoc.org/view/journals/bams/105/1/BAMS-D-23-0066.1.xml
 
 ## Contents
 - [MATLAB package](#matlab-package)
@@ -16,9 +24,14 @@ Tools to stochastically generate turbulent boundary-layer (TBL) velocity fields�
 
 ### MATLAB files
 All the code files are in `Matlab/src` folder:
+`Matlab/src`
 - main.m: defining initial conditions. The documentation for the code is provided in the files as comments.
+-stochastic_generation: defining an object
+`Matlab/src/SG_VelProf`
 - SGVP: codes to generate velocity profiles
+`Matlab/src/SG_VelField`
 - SGVF: codes to reorganize the generated profiles into correlated field
+`Matlab/src/SG_VorX`
 - SGVorX: codes to add vortex cores.
 
 
@@ -38,5 +51,5 @@ Full docs here...
 
 </details>
 
-## Stochatically generated velocity field
+## Stochatically Generated Velocity Field
 <img src = "Gen.gif">
