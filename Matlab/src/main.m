@@ -108,7 +108,7 @@ ylabel('$-Covar(u,w)/u_{\tau}^2$','Interpreter','Latex','FontSize',14);
 ylim([0 1.5])
 %% Stochastic Generation of Velocity Field (SGVF)
 
-% Gen_sample.SGVF()
+Gen_sample.SGVF()
 
 %% Stochastic Generation of Vortex cores 
 

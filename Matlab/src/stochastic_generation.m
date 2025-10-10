@@ -24,16 +24,17 @@ classdef stochastic_generation < dynamicprops
             %   Detailed explanation goes here
             obj.ro_uw = ro_uw;
             obj.N_prof = N;
-            % [obj.Gen_u_prof, obj.Gen_w_prof, obj.log_data_SGVP] =...
-            %     SG_VelProf(obj);
             [obj.Gen_u_prof, obj.Gen_w_prof, obj.log_data_SGVP] =...
-                SG_VelProf_parl(obj);
+                SG_VelProf(obj);
 
             
         end
         function SGVF(obj)
-            %METHOD1 Summary of this method goes here
+            %In this function, we try to reorganize the profiles generated
+            %in SGVP, to have correlated velocity field.
             %   Detailed explanation goes here
+            SG_VelField(obj)
+
             
         end
         function SGVorX(obj)
