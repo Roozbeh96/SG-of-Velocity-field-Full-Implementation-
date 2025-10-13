@@ -46,6 +46,12 @@ function obj = adding_shear_layer(obj)
     
     
             end
+            
+            if mod(j, checkpoint_Interval) == 0
+                elapsedTime = toc;  % Elapsed time up to the checkpoint
+                estimatedRemainingTime = (size(ufieldGenWT7,2) - j) * (elapsedTime);
+                fprintf('Estimated remaining time for reorganization: %.3f minutes\n', estimatedRemainingTime/60);
+            end
     
         end
     end

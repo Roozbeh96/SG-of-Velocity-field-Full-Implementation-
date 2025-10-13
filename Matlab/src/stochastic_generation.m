@@ -4,7 +4,8 @@ classdef stochastic_generation < dynamicprops
     
     properties
         u_tau, z_0, delta, lambda, nu, ro_uw, N_prof, z,...
-            Gen_u_prof, Gen_w_prof, log_data_SGVP
+            Gen_u_prof, Gen_w_prof, log_data_SGVP,...
+            Gen_u_prof_reorg, Gen_w_prof_reorg, hist_corr
     end
     
     methods
@@ -33,7 +34,8 @@ classdef stochastic_generation < dynamicprops
             %In this function, we try to reorganize the profiles generated
             %in SGVP, to have correlated velocity field.
             %   Detailed explanation goes here
-            SG_VelField(obj)
+            [obj.Gen_u_prof_reorg, obj.Gen_w_prof_reorg, obj.hist_corr] =...
+                SG_VelField(obj);
 
             
         end

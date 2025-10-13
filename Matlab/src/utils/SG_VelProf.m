@@ -14,6 +14,7 @@ function [Gen_u_prof, Gen_w_prof, log_data] = SG_VelProf(obj)
             z_i = obj.z(1);
             z_ind = 1;
             counter_2 = 1;
+            tic;
             while z_i < obj.z(end)
                 %{
                  Fitted model is avaliable in section 5.2:
@@ -53,6 +54,11 @@ function [Gen_u_prof, Gen_w_prof, log_data] = SG_VelProf(obj)
                         prof_num, numel(rand_u), counter_1);
                 end
             end
-        
+            if mod(prof_num, 500) == 0
+                elapsedTime = toc;  % Elapsed time up to the checkpoint
+                estimatedRemainingTime = (size(ufieldGenWT7,2) - prof_num) * (elapsedTime);
+                fprintf(['Estimated remaining time for stochastic profile generation:' ...
+                    '%.3f minutes\n'], estimatedRemainingTime/60);
+            end
         end
 end
