@@ -17,7 +17,7 @@ function obj = adding_shear_layer(obj)
     %}
     for i=1:size(obj.Gen_u_prof,2)
     
-        
+        tic;
         Delta_u_m = diff(obj.Gen_u_prof(:,i));
         Delta_w_m = diff(obj.Gen_w_prof(:,i));
     
@@ -47,11 +47,11 @@ function obj = adding_shear_layer(obj)
     
             end
             
-            if mod(j, checkpoint_Interval) == 0
-                elapsedTime = toc;  % Elapsed time up to the checkpoint
-                estimatedRemainingTime = (size(ufieldGenWT7,2) - j) * (elapsedTime);
-                fprintf('Estimated remaining time for reorganization: %.3f minutes\n', estimatedRemainingTime/60);
-            end
+        if mod(i, 5000) == 0
+            elapsedTime = toc;  % Elapsed time up to the checkpoint
+            estimatedRemainingTime = (size(obj.Gen_u_prof,2) - i) * (elapsedTime);
+            fprintf('Estimated remaining time for adding shear layer: %.2f minutes\n', estimatedRemainingTime/60);
+        end
     
         end
     end

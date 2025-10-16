@@ -54,11 +54,11 @@ function [Gen_u_prof, Gen_w_prof, log_data] = SG_VelProf(obj)
                         prof_num, numel(rand_u), counter_1);
                 end
             end
-            if mod(prof_num, 500) == 0
+            if mod(prof_num, 5000) == 0
                 elapsedTime = toc;  % Elapsed time up to the checkpoint
-                estimatedRemainingTime = (size(ufieldGenWT7,2) - prof_num) * (elapsedTime);
+                estimatedRemainingTime = (obj.N_prof - prof_num) * (elapsedTime);
                 fprintf(['Estimated remaining time for stochastic profile generation:' ...
-                    '%.3f minutes\n'], estimatedRemainingTime/60);
+                    '%.2f minutes\n'], estimatedRemainingTime/60);
             end
         end
 end
