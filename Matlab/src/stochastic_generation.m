@@ -3,9 +3,10 @@ classdef stochastic_generation < dynamicprops
     %and addition. The properties of the object is included as well.
     
     properties
-        u_tau, z_0, delta, lambda, nu, ro_uw, N_prof, z,...
+        u_tau, z_0, delta, lambda, nu, ro_uw, N_prof, z, Delta_x,...
             Gen_u_prof, Gen_w_prof, log_data_SGVP,...
-            Gen_u_prof_reorg, Gen_w_prof_reorg, hist_corr
+            Gen_u_LRVF, Gen_w_LRVF, hist_corr,...
+            Kr, Gen_u_HRVF, Gen_w_HRVF
     end
     
     methods
@@ -30,18 +31,20 @@ classdef stochastic_generation < dynamicprops
 
             
         end
-        function SGVF(obj)
+        function SGVF(obj, Delta_x)
             %In this function, we try to reorganize the profiles generated
             %in SGVP, to have correlated velocity field.
             %   Detailed explanation goes here
-            [obj.Gen_u_prof_reorg, obj.Gen_w_prof_reorg, obj.hist_corr] =...
+            obj.Delta_x = Delta_x;
+            [obj.Gen_u_LRVF, obj.Gen_w_LRVF, obj.hist_corr] =...
                 SG_VelField(obj);
 
             
         end
         function SGVorX(obj)
-            %METHOD1 Summary of this method goes here
+            % In this function, we try to add vortices to the SGVF.
             %   Detailed explanation goes here
+            [~] = SG_VorX(obj);
             
         end
     end

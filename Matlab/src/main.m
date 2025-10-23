@@ -68,7 +68,7 @@ N_prof is number of profiles we want to generate.
 %}
 
 ro_uw = -0.4;
-N_prof = 1e5;
+N_prof = 1e4;
 Gen_sample.SGVP(ro_uw, N_prof)
 
 figure
@@ -108,11 +108,16 @@ ylabel('$-Covar(u,w)/u_{\tau}^2$','Interpreter','Latex','FontSize',14);
 ylim([0 1.5])
 %% Stochastic Generation of Velocity Field (SGVF)
 
-Gen_sample.SGVF()
+%{ 
+    For the generated velocity field, you need to prescribe the distance
+    between the velocity profiles which here is lambda. 
+%}
+Delta_x = lambda;
+Gen_sample.SGVF(Delta_x)
 
 %% Stochastic Generation of Vortex cores 
 
-% Gen_sample.SGVorX()
+Gen_sample.SGVorX()
 
 
 
