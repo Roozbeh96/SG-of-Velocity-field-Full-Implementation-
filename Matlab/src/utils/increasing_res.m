@@ -1,4 +1,4 @@
-function [obj] = increasing_res(obj, L0, factor)
+function increasing_res(obj, L0, factor)
 
     L = ceil(L0*obj.delta/obj.Delta_x); %Number of intervals in one delta
     Numrator = floor((size(obj.Gen_u_LRVF,2)-1)/L);

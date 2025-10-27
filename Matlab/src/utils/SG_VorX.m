@@ -6,7 +6,12 @@ function [obj] = SG_VorX(obj)
     % the paper.  All these steps are done increasing_res function.
     L = 1; 
     Kr = 32;
-    [obj] = increasing_res(obj, L, Kr);
+    increasing_res(obj, L, Kr);
+    % In the next step, we need to find the Lambda_ci field to add the
+    % vortices.
+    Lambda_ci(obj)
+
+
 
 end
 
