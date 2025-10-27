@@ -1,7 +1,7 @@
-function [rand_u,rand_w] = genGaussCop(rho, n)
+function [rand_1,rand_2] = genGaussCop(rho, n, repro_numb)
 % for reproducibility, you can comment it if you want to generate different
 % numbers every time.
-rng(137); 
+rng(repro_numb); 
 % Convert target Pearson correlation for Uniforms to underlying Gaussian
 % correlation
 r = 2 * sin((pi/6) * rho);
@@ -15,6 +15,6 @@ RANDS = normcdf(RANDS);
 %the following code:
 % histogram(RANDS(:,1),'Normalization','pdf','NumBins',40)
 % histogram(RANDS(:,2),'Normalization','pdf','NumBins',40)
-rand_u = RANDS(:,1);
-rand_w = RANDS(:,2);
+rand_1 = RANDS(:,1);
+rand_2 = RANDS(:,2);
 end

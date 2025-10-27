@@ -1,4 +1,5 @@
-function SG_VorX(obj)
+function SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near,...
+    u_wOu_tau_far, r_wOlambda_T_far)
         %{
             The Pearson correlation coefficient between radius and the
             maximum azimuthal velocity of the generated vortices at
@@ -9,11 +10,6 @@ function SG_VorX(obj)
         rho_near = 0.4; 
         rho_Far = 0.45; 
 
-    
-        delUwOu_tau_near = load('delUwOu_tau_near.mat').delUwOu_tau_near;
-        delUwOu_tau_Far = load('delUwOu_tau_Far.mat').delUwOu_tau_Far;
-        rwOlambda_T_near = load('rwOlambda_T_near.mat').rwOlambda_T_near;
-        rwOlambda_T_Far = load('rwOlambda_T_Far.mat').rwOlambda_T_Far;
 
         ii = 1;
         iii = 1;
@@ -47,17 +43,17 @@ function SG_VorX(obj)
                 N = 1;
                 fac = 1.0;% should be more than 1.0
                 if obj.name ~= "GenASL"
-                    r_omega = rwOlambda_T_near(ii)*obj.Delx; %choose from near wall distribution
+                    r_omega = r_wOlambda_T_near(ii)*obj.Delx; %choose from near wall distribution
 %                         r_omega = rwOlambda_T_near(ii)*mean(obj.Lambda_T); %choose from near wall distribution
                     Trans = [1, rho_Near_wall(xi); 0, sqrt(1 - rho_Near_wall(xi)^2)];
-                    Gama=2*pi*delUwOu_tau_near(ii)*obj.u_tau*r_omega/(1-exp(-1)); 
+                    Gama=2*pi*u_wOu_tau_near(ii)*obj.u_tau*r_omega/(1-exp(-1)); 
                     xi= xi+1;
                     ii = ii+1;
                 else
-                    r_omega = rwOlambda_T_Far(iii)*obj.Delx;
+                    r_omega = r_wOlambda_T_far(iii)*obj.Delx;
 %                         r_omega = rwOlambda_T_Far(iii)*obj.Lambda_T;
                     Trans = [1, rho_Far_wall(xii); 0, sqrt(1 - rho_Far_wall(xii)^2)];
-                    Gama=2*pi*delUwOu_tau_Far(iii)*obj.u_tau*r_omega/(1-exp(-1)); 
+                    Gama=2*pi*u_wOu_tau_far(iii)*obj.u_tau*r_omega/(1-exp(-1)); 
                     xii = xii+1;
                     iii = iii+1;
                 end
@@ -272,8 +268,8 @@ function SG_VorX(obj)
                 E1 = 1;
                 E2 = 1;
                 [obj,ii,iii,z_prog, z_retro, pr, rt, xi, xii] = ...
-                    lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,rwOlambda_T_near,rwOlambda_T_Far,...
-                    delUwOu_tau_near,delUwOu_tau_Far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
+                    lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,r_wOlambda_T_near,r_wOlambda_T_far,...
+                    u_wOu_tau_near,u_wOu_tau_far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
                     rho_Far_wall(xii), xii, rho_near, rho_Far);%Primary vortex
                 xold = xcs(i);
                 if zcs(i)<= 2*obj.ks %#ok<IFBDUP>
@@ -283,43 +279,43 @@ function SG_VorX(obj)
                 end
                 %filling periphery of the vortex(Secondary vortices)
                 if zcs(i)<= 2*obj.ks % close to the wall
-                    while  xold+N1*rwOlambda_T_near(ii-1)*obj.Delx+N2*rwOlambda_T_near(ii)*obj.Delx<obj.HRVFx(centroids(i, 5))
+                    while  xold+N1*r_wOlambda_T_near(ii-1)*obj.Delx+N2*r_wOlambda_T_near(ii)*obj.Delx<obj.HRVFx(centroids(i, 5))
                         [obj,ii,iii,z_prog, z_retro, pr, rt, xi, xii] = ...
-                            lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,rwOlambda_T_near,rwOlambda_T_Far,...
-                            delUwOu_tau_near,delUwOu_tau_Far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
+                            lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,r_wOlambda_T_near,r_wOlambda_T_far,...
+                            u_wOu_tau_near,u_wOu_tau_far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
                             rho_Far_wall(xii), xii, rho_near, rho_Far);
-                        xold = xold+N1*rwOlambda_T_near(ii-1)*obj.Delx+N2*rwOlambda_T_near(ii)*obj.Delx;
+                        xold = xold+N1*r_wOlambda_T_near(ii-1)*obj.Delx+N2*r_wOlambda_T_near(ii)*obj.Delx;
                         N1 = N2;
                     end
                     xold = xcs(i);
                     N1 = 2;%1
                     ii = ii +1;
-                    while xold-N1*rwOlambda_T_near(ii-1)*obj.Delx-N2*rwOlambda_T_near(ii)*obj.Delx>obj.HRVFx(centroids(i, 4))
+                    while xold-N1*r_wOlambda_T_near(ii-1)*obj.Delx-N2*r_wOlambda_T_near(ii)*obj.Delx>obj.HRVFx(centroids(i, 4))
                         [obj,ii,iii,z_prog, z_retro, pr, rt, xi, xii] = ...
-                            lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,rwOlambda_T_near,rwOlambda_T_Far,...
-                            delUwOu_tau_near,delUwOu_tau_Far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
+                            lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,r_wOlambda_T_near,r_wOlambda_T_far,...
+                            u_wOu_tau_near,u_wOu_tau_far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
                             rho_Far_wall(xii), xii,rho_near, rho_Far);
-                        xold = xold-N1*rwOlambda_T_near(ii-1)*obj.Delx-N2*rwOlambda_T_near(ii)*obj.Delx;
+                        xold = xold-N1*r_wOlambda_T_near(ii-1)*obj.Delx-N2*r_wOlambda_T_near(ii)*obj.Delx;
                         N1 = N2;
                     end
                 else %Far from the wall
-                    while  xold+N1*rwOlambda_T_Far(iii-1)*obj.Delx+N2*rwOlambda_T_Far(iii)*obj.Delx<obj.HRVFx(centroids(i, 5))
+                    while  xold+N1*r_wOlambda_T_far(iii-1)*obj.Delx+N2*r_wOlambda_T_far(iii)*obj.Delx<obj.HRVFx(centroids(i, 5))
                         [obj,ii,iii,z_prog, z_retro, pr, rt, xi, xii] = ...
-                            lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,rwOlambda_T_near,rwOlambda_T_Far,...
-                            delUwOu_tau_near,delUwOu_tau_Far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
+                            lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,r_wOlambda_T_near,r_wOlambda_T_far,...
+                            u_wOu_tau_near,u_wOu_tau_far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
                             rho_Far_wall(xii), xii,rho_near, rho_Far);
-                        xold = xold+N1*rwOlambda_T_Far(iii-1)*obj.Delx+N2*rwOlambda_T_Far(iii)*obj.Delx;
+                        xold = xold+N1*r_wOlambda_T_far(iii-1)*obj.Delx+N2*r_wOlambda_T_far(iii)*obj.Delx;
                         N1 = N2;
                     end
                     xold = xcs(i);
                     N1 = 2;%1
                     iii = iii +1;
-                    while xold-N1*rwOlambda_T_Far(iii-1)*obj.Delx-N2*rwOlambda_T_Far(iii)*obj.Delx>obj.HRVFx(centroids(i, 4))
+                    while xold-N1*r_wOlambda_T_far(iii-1)*obj.Delx-N2*r_wOlambda_T_far(iii)*obj.Delx>obj.HRVFx(centroids(i, 4))
                         [obj,ii,iii,z_prog, z_retro, pr, rt, xi, xii] = ...
-                            lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,rwOlambda_T_near,rwOlambda_T_Far,...
-                            delUwOu_tau_near,delUwOu_tau_Far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
+                            lambdacivorX(obj,i,ii,iii,S,xcs,zcs,rot,r_wOlambda_T_near,r_wOlambda_T_far,...
+                            u_wOu_tau_near,u_wOu_tau_far, z_prog, z_retro, pr, rt, N1, E1, E2,rho_Near_wall(xi),xi,...
                             rho_Far_wall(xii), xii,rho_near, rho_Far);
-                        xold = xold-N1*rwOlambda_T_Far(iii-1)*obj.Delx-N2*rwOlambda_T_Far(iii)*obj.Delx;
+                        xold = xold-N1*r_wOlambda_T_far(iii-1)*obj.Delx-N2*r_wOlambda_T_far(iii)*obj.Delx;
                         N1 = N2;
                     end
                 end

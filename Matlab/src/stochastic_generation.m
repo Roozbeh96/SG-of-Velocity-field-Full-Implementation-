@@ -7,7 +7,8 @@ classdef stochastic_generation < dynamicprops
             Gen_u_prof, Gen_w_prof, log_data_SGVP,...
             Gen_u_LRVF, Gen_w_LRVF, Gen_x_LRVF, hist_corr,...
             Kr, Gen_u_HRVF, Gen_w_HRVF, Gen_x_HRVF,...
-            Lambda_ci, Lambda_cirms
+            Lambda_ci, Lambda_cirms,...
+            ro_r_u_omega_near_wall, ro_r_u_omega_far_wall
     end
     
     methods
@@ -42,10 +43,12 @@ classdef stochastic_generation < dynamicprops
 
             
         end
-        function SGVorX(obj)
+        function SGVorX(obj, u_wOu_tau_near, r_wOlambda_T_near,...
+            u_wOu_tau_far, r_wOlambda_T_far)
             % In this function, we try to add vortices to the SGVF.
             %   Detailed explanation goes here
-            SG_VorX(obj);
+            SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near,...
+                u_wOu_tau_far, r_wOlambda_T_far);
             
         end
     end

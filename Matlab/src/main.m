@@ -99,16 +99,14 @@ Lambda_ci(Gen_sample)
 %{
     At this step, we genrate radius(r_{\omega}), maximum azimuthal velocity
     (u_{\omega}), and the correlation coefficient between u and w component
-    of the generated vortex \rho^{VorX}_{u,w}.
+    of the generated vortex \rho^{VorX}_{u,w}. Generated values for r_omega
+    are normalized by lambda_T, for u_omega are normalized by u_tau.
 %}
 
-delUwOu_tau_near = load('delUwOu_tau_near.mat').delUwOu_tau_near;
-delUwOu_tau_Far = load('delUwOu_tau_Far.mat').delUwOu_tau_Far;
-rwOlambda_T_near = load('rwOlambda_T_near.mat').rwOlambda_T_near;
-rwOlambda_T_Far = load('rwOlambda_T_Far.mat').rwOlambda_T_Far;
+[u_wOu_tau_near, r_wOlambda_T_near,...
+    u_wOu_tau_far, r_wOlambda_T_far] = VorX_generator(Gen_sample);
+
 %% Stochastic Generation of Vortex cores
-Gen_sample.SGVorX()
 
-
-
-
+Gen_sample.SGVorX(u_wOu_tau_near, r_wOlambda_T_near,...
+    u_wOu_tau_far, r_wOlambda_T_far)

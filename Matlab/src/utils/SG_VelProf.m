@@ -3,7 +3,8 @@ function [Gen_u_prof, Gen_w_prof, log_data] = SG_VelProf(obj)
 %the folllowing lines.
 %#ok<*AGROW>
     N_rand = 1e6;
-    [rand_u,rand_w] = genGaussCop(obj.ro_uw, N_rand);
+    repro_numb = 137; %for reproducibility, we generate one set of random numbers
+    [rand_u,rand_w] = genGaussCop(obj.ro_uw, N_rand, repro_numb);
     Gen_u_prof = zeros(size(obj.z,2),obj.N_prof);
     Gen_w_prof = zeros(size(obj.z,2),obj.N_prof);
     kappa = 0.39;
