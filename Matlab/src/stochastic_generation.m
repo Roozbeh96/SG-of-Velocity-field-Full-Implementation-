@@ -45,7 +45,7 @@ classdef stochastic_generation < dynamicprops
         function SGVorX(obj)
             % In this function, we try to add vortices to the SGVF.
             %   Detailed explanation goes here
-            [~] = SG_VorX(obj);
+            SG_VorX(obj);
             
         end
     end

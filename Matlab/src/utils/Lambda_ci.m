@@ -5,30 +5,29 @@ function Lambda_ci(obj)
     DelzGen = obj.z(2)-obj.z(1);
 
     for S= 1:size(obj.Lambda_ci,3)
-    
+    tic;
     [dudx, dudz] = gradient(obj.Gen_u_HRVF(:,:, S),DelxGen,DelzGen);
     [dwdx, dwdz] = gradient(obj.Gen_w_HRVF(:,:, S),DelxGen,DelzGen);
 
     omega = dwdx - dudz;
-    Mat = zeros(size(dudx,1),size(dudx,2),2,2);
-    Mat(:,:,1,1) = dudx;
-    Mat(:,:,1,2) = dudz;
-    Mat(:,:,2,1) = dwdx;
-    Mat(:,:,2,2) = dwdz;
-    for r = 1:size(obj.Lambda_ci,1)
+        for r = 1:size(obj.Lambda_ci,1)
+        
+            for c = 1:size(obj.Lambda_ci,2)
     
-        for c = 1:size(obj.Lambda_ci,2)
-            temp = reshape(Mat(r,c,:,:),[2,2]);
-            obj.Lambda_ci(r,c,S) = unique(abs(imag(eig(temp))))...
-                *sign(omega(r,c));
-    
+                temp = [dudx(r,c) dudz(r,c); dwdx(r,c) dwdz(r,c)];
+                obj.Lambda_ci(r,c,S) = unique(abs(imag(eig(temp))))...
+                    *sign(omega(r,c));
+        
+            end
         end
+        if mod(S, 100) == 0
+                elapsedTime = toc;  % Elapsed time up to the checkpoint
+                estimatedRemainingTime = (size(obj.Lambda_ci,3) - S) * (elapsedTime);
+                fprintf('Estimated remaining time for computing Lambda_ci field: %.2f minutes\n', estimatedRemainingTime/60);
+        end
+      
     end
     
-    
-    end
-    % Since mean(Lambda_ci) ~= 0, the Lambda_cirms can be calculated as
-    % follows:
-    obj.Lambda_cirms = (mean(mean(obj.Lambda_ci.^2,3),2)).^0.5;
+    obj.Lambda_cirms = mean(std(obj.Lambda_ci,0,3),2);
 end
 

@@ -80,8 +80,33 @@ Gen_sample.SGVP(ro_uw, N_prof)
 Delta_x = lambda;
 Gen_sample.SGVF(Delta_x)
 
-%% Stochastic Generation of Vortex cores 
+%% Increasing the resolution of the SGVF and compute the lambda_ci field
+%{
+ At the first step, we need to divide the VF into 1 * delta (L = 1)
+ intervals, and increase the resolution. For increasing the resolution,
+ the factor that should be increased is another input parameter. Here 
+ Kr is the factor parameter which is consistent with the parameter in 
+ the paper.  All these steps are done increasing_res function.
+%}
+L = 1; 
+Kr = 32;
+increasing_res(Gen_sample, L, Kr);
+% In the next step, we need to find the Lambda_ci field to add the
+% vortices.
+Lambda_ci(Gen_sample)
 
+%% Generating radius, maximum azimuthal velocity, and corrcoeff(u,w)
+%{
+    At this step, we genrate radius(r_{\omega}), maximum azimuthal velocity
+    (u_{\omega}), and the correlation coefficient between u and w component
+    of the generated vortex \rho^{VorX}_{u,w}.
+%}
+
+delUwOu_tau_near = load('delUwOu_tau_near.mat').delUwOu_tau_near;
+delUwOu_tau_Far = load('delUwOu_tau_Far.mat').delUwOu_tau_Far;
+rwOlambda_T_near = load('rwOlambda_T_near.mat').rwOlambda_T_near;
+rwOlambda_T_Far = load('rwOlambda_T_Far.mat').rwOlambda_T_Far;
+%% Stochastic Generation of Vortex cores
 Gen_sample.SGVorX()
 
 
