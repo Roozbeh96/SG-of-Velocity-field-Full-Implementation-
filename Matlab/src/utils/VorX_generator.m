@@ -1,5 +1,5 @@
-function [u_wOu_tau_near, r_wOlambda_T_near,...
-    u_wOu_tau_far, r_wOlambda_T_far]= VorX_generator(obj)
+function [u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
+    u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far]= VorX_generator(obj)
 
     % Generating corrolated random numbers for radius and max-azimuthal
     % velocity. First we generate for near wall then generate for far from
@@ -38,7 +38,35 @@ function [u_wOu_tau_near, r_wOlambda_T_near,...
     idx_power_law = rand_r_omega > rand_x_t;
     r_wOlambda_T_near(idx_power_law) = x_t * ((1 - rand_r_omega(idx_power_law)) / (1 - rand_x_t)).^(-1 / alpha);
 
-    % Generate for far from the wall
+    % Generating \rho^{VorX}_{u,w}
+    C1 = 1.23;
+    omega = 0.58;
+    kesi = -0.61;
+    beta = 2.37;
+
+    pdf_skewedGauss = @(x) ...
+    C1 * (1 - x.^2) .* (2 ./ omega .* normpdf((x - kesi) ./ omega) .* normcdf(beta .* (x - kesi) ./ omega));
+
+    x_vals = linspace(-1, 1, 1000); 
+    % Step 1: Calculate the p.d.f. over the range
+    pdf_vals = pdf_skewedGauss(x_vals);
+    
+    % Step 2: Compute the c.d.f. using cumulative trapezoidal integration
+    cdf_vals = cumtrapz(x_vals, pdf_vals);
+    cdf_vals = cdf_vals ./ max(cdf_vals);  % Normalize to ensure c.d.f. ends at 1
+    
+    % Step 3: Invert the c.d.f. using interpolation
+    inversecdf = @(rand_) interp1(cdf_vals, x_vals, rand_, 'linear', 'extrap');
+    
+    % Step 4: Generate uniform random numbers
+    rng(18)
+    rand_rho_uw_VorX = rand(n, 1);  % Uniform random numbers in [0, 1]
+    
+    % Step 5: Generate samples using the inverse c.d.f.
+    rho_uw_VorX_near = inversecdf(rand_rho_uw_VorX);
+
+
+    % Generate vortex parameters for far from the wall
 
     obj.ro_r_u_omega_far_wall = 0.45;
     n = 1e7; % Number of samples
@@ -68,5 +96,23 @@ function [u_wOu_tau_near, r_wOlambda_T_near,...
     %genearted close wall r_w/lambda For For rand_r_omega > rand_x_t (Power-law region)
     idx_power_law = rand_r_omega > rand_x_t;
     r_wOlambda_T_far(idx_power_law) = x_t * ((1 - rand_r_omega(idx_power_law)) / (1 - rand_x_t)).^(-1 / alpha);
+
+    % Generating \rho^{VorX}_{u,w}
+    C1 = 1.28;
+    omega = 0.66;
+    kesi = -0.54;
+    beta = 1.80;
+
+    pdf_skewedGauss = @(x) ...
+    C1 * (1 - x.^2) .* (2 ./ omega .* normpdf((x - kesi) ./ omega) .* normcdf(beta .* (x - kesi) ./ omega));
+
+    x_vals = linspace(-1, 1, 1000); 
+    pdf_vals = pdf_skewedGauss(x_vals);
+    cdf_vals = cumtrapz(x_vals, pdf_vals);
+    cdf_vals = cdf_vals ./ max(cdf_vals);  
+    inversecdf = @(rand_) interp1(cdf_vals, x_vals, rand_, 'linear', 'extrap');
+    rng(61)
+    rand_rho_uw_VorX = rand(n, 1);  
+    rho_uw_VorX_far = inversecdf(rand_rho_uw_VorX);
 
 end

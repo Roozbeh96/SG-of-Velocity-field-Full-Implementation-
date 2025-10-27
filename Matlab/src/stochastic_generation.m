@@ -43,12 +43,12 @@ classdef stochastic_generation < dynamicprops
 
             
         end
-        function SGVorX(obj, u_wOu_tau_near, r_wOlambda_T_near,...
-            u_wOu_tau_far, r_wOlambda_T_far)
+        function SGVorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
+            u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far)
             % In this function, we try to add vortices to the SGVF.
             %   Detailed explanation goes here
-            SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near,...
-                u_wOu_tau_far, r_wOlambda_T_far);
+            SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
+                u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far);
             
         end
     end

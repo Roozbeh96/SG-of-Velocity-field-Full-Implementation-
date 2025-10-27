@@ -103,10 +103,10 @@ Lambda_ci(Gen_sample)
     are normalized by lambda_T, for u_omega are normalized by u_tau.
 %}
 
-[u_wOu_tau_near, r_wOlambda_T_near,...
-    u_wOu_tau_far, r_wOlambda_T_far] = VorX_generator(Gen_sample);
+[u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
+    u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far] = VorX_generator(Gen_sample);
 
 %% Stochastic Generation of Vortex cores
 
-Gen_sample.SGVorX(u_wOu_tau_near, r_wOlambda_T_near,...
-    u_wOu_tau_far, r_wOlambda_T_far)
+Gen_sample.SGVorX(u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
+    u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far)
