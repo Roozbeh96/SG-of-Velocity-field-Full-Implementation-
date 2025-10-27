@@ -24,17 +24,19 @@ Tools to stochastically generate turbulent boundary-layer (TBL) velocity fieldsâ
 
 ### MATLAB files
 All the code files are in `Matlab/src` folder:
+
+
 `Matlab/src`
 - main.m: defining initial conditions. The documentation for the code is provided in the files as comments.
-- stochastic_generation: defining an object and transfers to different functions\n
+- stochastic_generation: defining an object and transfers to different functions
 `Matlab/src/utils/SG_VelProf`
-- SGVP: codes to generate velocity profiles.\n
+- SGVP: codes to generate velocity profiles.
 `Matlab/src/utils/SG_VelField`
-- SGVF: codes to reorganize the generated profiles into correlated field.\n
+- SGVF: codes to reorganize the generated profiles into correlated field.
 `Matlab/src/utils/SG_VorX`
-- SGVorX: codes to add vortex cores.\n
+- SGVorX: codes to add vortex cores.
 `Matlab/src/utils/plots`
-- Plots: After generating the object, plot the statistics of the generated field. \n
+- Plots: After generating the object, plot the statistics of the generated field.
 
 </details>
 
