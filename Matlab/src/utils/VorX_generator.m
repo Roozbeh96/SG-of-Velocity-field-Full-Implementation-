@@ -38,6 +38,11 @@ function [u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
     idx_power_law = rand_r_omega > rand_x_t;
     r_wOlambda_T_near(idx_power_law) = x_t * ((1 - rand_r_omega(idx_power_law)) / (1 - rand_x_t)).^(-1 / alpha);
 
+    % Check to plot the p.d.f. You can try it for other parameters.
+    % histogram(r_wOlambda_T_near,'Normalization','pdf','NumBins',500)
+    % [f, xi] = ksdensity(r_wOlambda_T_near);
+    % plot(xi, f, 'r', 'LineWidth', 2)
+
     % Generating \rho^{VorX}_{u,w}
     C1 = 1.23;
     omega = 0.58;

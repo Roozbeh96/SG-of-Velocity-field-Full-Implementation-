@@ -31,6 +31,8 @@ details about this dataset in the papers.
 u_tau = 0.39; %[m/s]
 z_0 = 6.2e-4; %[m]
 kappa = 0.39;
+AFR = 8.5;
+ks = z_0/exp(-kappa*AFR);
 delta = 0.4; %[m]
 lambda = 0.01; %[m]
 nu = 1.57e-5; %[m^2/s]
@@ -47,7 +49,7 @@ z_max = 0.25*delta; %[m]
 res_z = 0.4*lambda/10; %[m]
 % Let us generate an object. 
 
-Gen_sample = stochastic_generation(u_tau, z_0, delta, lambda, nu,z_min, z_max,...
+Gen_sample = stochastic_generation(u_tau, z_0, ks,delta, lambda, nu,z_min, z_max,...
     res_z);
 
 %% Stochastic Generation of Velocity Profiles (SGVP)
@@ -110,3 +112,8 @@ Lambda_ci(Gen_sample)
 
 Gen_sample.SGVorX(u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
     u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far)
+
+%% Passing smoothing filter
+
+Gen_sample.Gauss_kernel(0.4,0.4, [Gen_sample.lambda*0.00001 0;...
+    0 Gen_sample.lambda*0.00001])

@@ -3,20 +3,24 @@ classdef stochastic_generation < dynamicprops
     %and addition. The properties of the object is included as well.
     
     properties
-        u_tau, z_0, delta, lambda, nu, ro_uw, N_prof, z, Delta_x,...
+        u_tau, z_0, ks, delta, lambda, nu, ro_uw, N_prof, z, Delta_x,...
             Gen_u_prof, Gen_w_prof, log_data_SGVP,...
             Gen_u_LRVF, Gen_w_LRVF, Gen_x_LRVF, hist_corr,...
             Kr, Gen_u_HRVF, Gen_w_HRVF, Gen_x_HRVF,...
             Lambda_ci, Lambda_cirms,...
-            ro_r_u_omega_near_wall, ro_r_u_omega_far_wall
+            ro_r_u_omega_near_wall, ro_r_u_omega_far_wall,...
+            prograde_VorX_data, retrograde_VorX_data,...
+            PowSpecDen_k, wavenumb, epsilon_spec, eta_spec,...
+            D11, r11, epsilon_str, eta_str
     end
     
     methods
-        function obj = stochastic_generation(u_tau, z_0, delta, lambda, nu, ...
+        function obj = stochastic_generation(u_tau, z_0, ks,delta, lambda, nu, ...
                 z_min, z_max, res_z)
             %STOCHASTIC_GENERATION Construct an instance of this class
             obj.u_tau = u_tau;
             obj.z_0 = z_0;
+            obj.ks = ks;
             obj.delta = delta;
             obj.lambda = lambda;
             obj.nu = nu;
@@ -51,6 +55,20 @@ classdef stochastic_generation < dynamicprops
                 u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far);
             
         end
+
+        function Structure_function(obj)
+            str_func(obj)
+        end
+
+        function Spectral_analysis(obj)
+            spec_analysis(obj)    
+        end
+        function Gauss_kernel(obj,kern_xsize, kern_ysize, Sigma)
+            % Applying Multivariate Gaussian Kernel
+            MVG_kernel(obj, kern_xsize, kern_ysize, Sigma)
+            
+        end
+
     end
 end
 
