@@ -99,7 +99,5 @@ poetry new project_name
 - Explanation:
 </details>
 
-
-
 ## Stochatically Generated Velocity Field
 <img src = "Gen.gif">
