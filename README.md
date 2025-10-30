@@ -96,8 +96,10 @@ poetry new project_name
   <summary>Click to see the documentation for Python files</summary>
 
 ### Python files
+- Explanation:
+</details>
 
--Explanation about the files:
+
 
 ## Stochatically Generated Velocity Field
 <img src = "Gen.gif">
