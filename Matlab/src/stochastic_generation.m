@@ -55,20 +55,19 @@ classdef stochastic_generation < dynamicprops
                 u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far);
             
         end
-
         function Structure_function(obj)
             str_func(obj)
+            
         end
-
         function Spectral_analysis(obj)
-            spec_analysis(obj)    
+            spec_analysis(obj) 
+
         end
         function Gauss_kernel(obj,kern_xsize, kern_ysize, Sigma)
             % Applying Multivariate Gaussian Kernel
             MVG_kernel(obj, kern_xsize, kern_ysize, Sigma)
             
         end
-
     end
 end
 

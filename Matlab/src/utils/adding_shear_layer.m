@@ -15,9 +15,9 @@ function obj = adding_shear_layer(obj)
     figure
     plot(obj.Gen_u_prof(:,1),obj.z)
     %}
+    progressbar('Adding Shear Layer')
     for i=1:size(obj.Gen_u_prof,2)
     
-        tic;
         Delta_u_m = diff(obj.Gen_u_prof(:,i));
         Delta_w_m = diff(obj.Gen_w_prof(:,i));
     
@@ -45,14 +45,8 @@ function obj = adding_shear_layer(obj)
                 obj.Gen_w_prof(c(1,k),i)=w(1,cc);
     
     
-            end
-            
-        if mod(i, 5000) == 0
-            elapsedTime = toc;  % Elapsed time up to the checkpoint
-            estimatedRemainingTime = (size(obj.Gen_u_prof,2) - i) * (elapsedTime);
-            fprintf('Estimated remaining time for adding shear layer: %.2f minutes\n', estimatedRemainingTime/60);
+            end 
         end
-    
-        end
+        progressbar((i)/size(obj.Gen_u_prof,2))
     end
 end

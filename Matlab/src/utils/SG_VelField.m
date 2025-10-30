@@ -63,9 +63,9 @@ function [Gen_u_prof_reorg, Gen_w_prof_reorg, hist_corr] = SG_VelField(obj)
 
     C=zeros();
     hist_corr=cell(1,size(Gen_u_prof_reorg,2)-1);
+    progressbar('Generating Velocity Field')
     for prof_num_Vfield=2:size(Gen_u_prof_reorg,2)
         
-        tic;
         for prof_num_storage=1:size(u_storage,2)
  
             % [c,~] = xcorr(Gen_u_prof_reorg(:,prof_num_Vfield-1),u_storage(:,prof_num_storage),0,'normalized');
@@ -103,11 +103,7 @@ function [Gen_u_prof_reorg, Gen_w_prof_reorg, hist_corr] = SG_VelField(obj)
 
         C=zeros();
         
-        if mod(prof_num_Vfield, 5000) == 0
-            elapsedTime = toc;  % Elapsed time up to the checkpoint
-            estimatedRemainingTime = (size(Gen_u_prof_reorg,2) - prof_num_Vfield) * (elapsedTime);
-            fprintf('Estimated remaining time for reorganization: %.2f minutes\n', estimatedRemainingTime/60);
-        end
+        progressbar((prof_num_Vfield)/size(Gen_u_prof_reorg,2))
     end
 end
 

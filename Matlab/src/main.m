@@ -108,7 +108,7 @@ Lambda_ci(Gen_sample)
 [u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
     u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far] = VorX_generator(Gen_sample);
 
-%% Stochastic Generation of Vortex cores
+%% Adding Stochastically Generated Vortex Cores to the VF
 
 Gen_sample.SGVorX(u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
     u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far)
@@ -117,3 +117,8 @@ Gen_sample.SGVorX(u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
 
 Gen_sample.Gauss_kernel(0.4,0.4, [Gen_sample.lambda*0.00001 0;...
     0 Gen_sample.lambda*0.00001])
+
+%% Spectral and structure function analysis
+
+Gen_sample.Spectral_analysis
+Gen_sample.Structure_function

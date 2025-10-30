@@ -13,7 +13,7 @@ function str_func(obj)
     obj.r11=zeros(1,win12del+1);
     obj.epsilon_str = zeros(size(concat_uprime,1),Numb_frame);
     obj.eta_str = zeros(size(concat_uprime,1),Numb_frame);
-
+    progressbar('Computing Structure Function')
     for r=0:win12del
         obj.r11(1,r+1)=(obj.Gen_x_HRVF(2)-obj.Gen_x_HRVF(1))*r;
     end
@@ -28,6 +28,7 @@ function str_func(obj)
         [max_val]=max(obj.D11(:,:,S).*obj.r11.^(-2/3),[],2);
         obj.epsilon_str(:,S) = (2./max_val).^(-3/2);
         obj.eta_str(:,S)=(obj.nu^3./obj.epsilon_str(:,S)).^0.25;
+        progressbar((S)/Numb_frame)
     end
 
 end

@@ -13,7 +13,7 @@ function SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
         ii = 1; % counter for r_omega and u_omega of z/ks<2 vortices
         %(could be near-wall or lambda_ci vortices)
         iii = 1;% counter for z/ks>=2 vortices (lambda_ci vortices)
-
+        progressbar('Adding VorX to the Velocity Field')
         % Filter low intense lambda_ci regions.
         Lambda_ci_filtered = obj.Lambda_ci;
         for r = 1:size(obj.Lambda_ci, 1)
@@ -59,19 +59,19 @@ function SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
                 % Find distance between the near-wall vortices. 
                 if temp_near_wall_VorX_counter > 1
                     near_wall_VorX_data{S}{temp_near_wall_VorX_counter} = ...
-                        dictionary(["x_VorX","zVorX","u_omega","r_omega",...
-                        "Dist_to_prev_VorX"],[xc_near_wall, zc_near_wall,u_omega,...
+                        dictionary(["xc_VorX[m]","zc_VorX[m]","u_omega[m/s]","r_omega[m]",...
+                        "Dist_to_prev_VorX[m]"],[xc_near_wall, zc_near_wall,u_omega,...
                         r_omega, xc_near_wall-prev_pos_xc_near_wall_VorX]); 
                     prev_pos_xc_near_wall_VorX = xc_near_wall;
                     temp_near_wall_VorX_counter = temp_near_wall_VorX_counter +1;
                     
                 else 
-                    prev_pos_xc_near_wall_VorX = xc_near_wall;
-                    temp_near_wall_VorX_counter = temp_near_wall_VorX_counter +1;
                     near_wall_VorX_data{S}{temp_near_wall_VorX_counter} = ...
-                        dictionary(["x_VorX","zVorX","u_omega","r_omega",...
+                        dictionary(["xc_VorX","zc_VorX","u_omega","r_omega",...
                         "Dist_to_prev_VorX"],[xc_near_wall, zc_near_wall,u_omega,...
                         r_omega,0]); 
+                    prev_pos_xc_near_wall_VorX = xc_near_wall;
+                    temp_near_wall_VorX_counter = temp_near_wall_VorX_counter +1;
                 end
 
 
@@ -96,6 +96,11 @@ function SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
                 Theta(nan_indices) = 0;
 
                 u_VorX = uazi.*sin(Theta);
+                %Check whether generated vortex can be resolved in our mesh
+                %domain or not.
+                if isempty(u_VorX)
+                    continue
+                end
                 % Subtracting the center velocity from u_VorX
                 u_VorX(uazi~=0)=u_VorX(uazi~=0)-Gama/(2*pi*r_omega)*(1-exp(-1));
                 w_VorX = -uazi.*cos(Theta);
@@ -105,9 +110,7 @@ function SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
                 u_TVorX = reshape(B(:,1), size(u_VorX));
                 w_TVorX = reshape(B(:,2), size(w_VorX));
 
-                if isempty(u_VorX)
-                    continue
-                end
+                
                 % Adding to the velocity field.
                 obj.Gen_u_HRVF(indz,indx,S) = obj.Gen_u_HRVF(indz,indx,S)+ u_TVorX;
                 obj.Gen_w_HRVF(indz,indx,S) = obj.Gen_w_HRVF(indz,indx,S)+ w_TVorX;
@@ -127,10 +130,10 @@ function SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
             centroids = zeros(1,5);
             ix = 1;
             % Calculate the mass center (centroid) for each connected component
-            for i = 1:numb_clusters
+            for x = 1:numb_clusters
                 % Extract the indices of the current component
-                [rows, cols] = find(labeledMatrix == i);
-                values = Matrix(labeledMatrix == i);
+                [rows, cols] = find(labeledMatrix == x);
+                values = Matrix(labeledMatrix == x);
                 sign_region_mean = sign(mean(values));
                 % Calculate the centroid
                 row_centroid = sum(rows .* values) / sum(values);
@@ -139,7 +142,7 @@ function SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
                 % Round the centroids to the nearest integer
                 row_centroid = round(row_centroid);
                 col_centroid = round(col_centroid);
-                if row_centroid <= 0 || row_centroid > size(obj.z,1)
+                if row_centroid <= 0 || row_centroid > size(obj.z,2)
                     continue
                 end
                 if col_centroid <= 0 || col_centroid > size(obj.Gen_x_HRVF,2)
@@ -157,67 +160,69 @@ function SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
             Numb_vortices  = size(centroids,1);
             pro_counter = 1; %counter for lambda_ci prograde vortices
             retro_counter = 1; %counter for lambda_ci retrograde vortices
-            
+            N = 2;
             for i=1:Numb_vortices               
                 if zcs(i)< 2*obj.ks % close to the wall
                     %Primary vortex
+                    ind_Pri_VorX = ii;
                     [pro_counter, retro_counter] = ...
                     Lambdaci_VorX(obj,i,S,xcs,zcs,rot,r_wOlambda_T_near(ii),...
                     u_wOu_tau_near(ii), rho_uw_VorX_near(ii), pro_counter, retro_counter, N);
-                    x_ = xcs(i);
+                    x_ = xcs(i)+N*r_wOlambda_T_near(ind_Pri_VorX)*obj.lambda;
                     ii = ii+1;
                     %Filling the right side till reaching to right margin(Scondary vortices)
-                    while  x_+N*r_wOlambda_T_near(ii-1)*obj.lambda+...
-                            N*r_wOlambda_T_near(ii)*obj.lambda<obj.Gen_x_HRVF(centroids(i, 5))
+                    while  x_+N*r_wOlambda_T_near(ii)*obj.lambda<...
+                            obj.Gen_x_HRVF(centroids(i, 5))
                         [pro_counter, retro_counter] = ...
                             Lambdaci_VorX(obj,i,S,xcs,zcs,rot,r_wOlambda_T_near(ii),...
                             u_wOu_tau_near(ii), rho_uw_VorX_near(ii), pro_counter, retro_counter, N);
-                        x_ = x_+N*r_wOlambda_T_near(ii-1)*obj.lambda+N*r_wOlambda_T_near(ii)*obj.lambda;
+                        x_ = x_+2*N*r_wOlambda_T_near(ii)*obj.lambda;
                         ii = ii+1;
                     end
-                    x_ = xcs(i);
+                    x_ = xcs(i)-N*r_wOlambda_T_near(ind_Pri_VorX)*obj.lambda;
                     ii = ii +1;
                     %Filling the left side till reaching to left margin(Scondary vortices)
-                    while x_-N*r_wOlambda_T_near(ii-1)*obj.lambda-...
-                            N*r_wOlambda_T_near(ii)*obj.lambda>obj.Gen_x_HRVF(centroids(i, 4))
+                    while x_-N*r_wOlambda_T_near(ii)*obj.lambda>...
+                            obj.Gen_x_HRVF(centroids(i, 4))
                         [pro_counter, retro_counter] = ...
                             Lambdaci_VorX(obj,i,S,xcs,zcs,rot,r_wOlambda_T_near(ii),...
                             u_wOu_tau_near(ii), rho_uw_VorX_near(ii), pro_counter, retro_counter, N);
-                        x_ = x_-N*r_wOlambda_T_near(ii-1)*obj.lambda-N*r_wOlambda_T_near(ii)*obj.lambda;
+                        x_ = x_-2*N*r_wOlambda_T_near(ii)*obj.lambda;
                         ii = ii+1;
                     end
                     ii = ii +1;
                 else %Far from the wall(z/ks>=2)
                     %Primary vortex
+                    ind_Pri_VorX = iii;
                     [pro_counter, retro_counter] = ...
                     Lambdaci_VorX(obj,i,S,xcs,zcs,rot,r_wOlambda_T_far(iii),...
                     u_wOu_tau_far(iii), rho_uw_VorX_far(iii), pro_counter, retro_counter, N);
-                    x_ = xcs(i);
+                    x_ = xcs(i)+N*r_wOlambda_T_far(ind_Pri_VorX)*obj.lambda;
                     iii = iii + 1;
                     %Filling the right side till reaching to right margin(Scondary vortices)
-                    while  x_+N*r_wOlambda_T_far(iii-1)*obj.lambda+...
-                            N*r_wOlambda_T_far(iii)*obj.lambda<obj.Gen_x_HRVF(centroids(i, 5))
+                    while  x_+N*r_wOlambda_T_far(iii)*obj.lambda<...
+                            obj.Gen_x_HRVF(centroids(i, 5))
                         [pro_counter, retro_counter] = ...
                             Lambdaci_VorX(obj,i,S,xcs,zcs,rot,r_wOlambda_T_far(iii),...
                             u_wOu_tau_far(iii), rho_uw_VorX_far(iii), pro_counter, retro_counter, N);
-                        x_ = x_+N*r_wOlambda_T_far(iii-1)*obj.lambda+...
-                            N*r_wOlambda_T_far(iii)*obj.lambda;
+                        x_ = x_+2*N*r_wOlambda_T_far(iii)*obj.lambda;
                         iii = iii + 1;
                     end
-                    x_ = xcs(i);
+                    x_ = xcs(i)-N*r_wOlambda_T_far(ind_Pri_VorX)*obj.lambda;
                     iii = iii +1;
                     %Filling the left side till reaching to left margin(Scondary vortices)
-                    while x_-N*r_wOlambda_T_far(iii-1)*obj.lambda-N*r_wOlambda_T_far(iii)*obj.lambda>obj.Gen_x_HRVF(centroids(i, 4))
+                    while x_-N*r_wOlambda_T_far(iii)*obj.lambda>...
+                            obj.Gen_x_HRVF(centroids(i, 4))
                         [pro_counter, retro_counter] = ...
                             Lambdaci_VorX(obj,i,S,xcs,zcs,rot,r_wOlambda_T_far(iii),...
                             u_wOu_tau_far(iii), rho_uw_VorX_far(iii), pro_counter, retro_counter, N);
-                        x_ = x_-N*r_wOlambda_T_far(iii-1)*obj.lambda-...
-                            N*r_wOlambda_T_far(iii)*obj.lambda;
+                        x_ = x_-2*N*r_wOlambda_T_far(iii)*obj.lambda;
                         iii = iii + 1;
                     end
                     iii = iii +1;
                 end
             end
+            progressbar((S)/size(obj.Gen_u_HRVF,3))
         end
 
 end

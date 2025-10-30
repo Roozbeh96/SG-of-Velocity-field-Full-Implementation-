@@ -11,11 +11,11 @@ function [Gen_u_prof, Gen_w_prof, log_data] = SG_VelProf(obj)
     rng(37)
     rand_h = rand(N_rand,1);
     counter_1 = 1;
+    progressbar('Profile Generation')
         for prof_num = 1:obj.N_prof
             z_i = obj.z(1);
             z_ind = 1;
             counter_2 = 1;
-            tic;
             while z_i < obj.z(end)
                 %{
                  Fitted model is avaliable in section 5.2:
@@ -32,14 +32,14 @@ function [Gen_u_prof, Gen_w_prof, log_data] = SG_VelProf(obj)
                 row = find(obj.z > z_i + hm_i,1,'first');
                 if row
                     log_data{prof_num}{counter_2} = ...
-                        dictionary(["hm_i","zm_i","um_i","wm_i"],...
+                        dictionary(["hm_i[m]","zm_i[m]","um_i[m/s]","wm_i[m/s]"],...
                         [hm_i, z_i+hm_i/2, um_i, wm_i]);
                     Gen_u_prof(z_ind:row-1, prof_num) = um_i;
                     Gen_w_prof(z_ind:row-1, prof_num) = wm_i;
                     z_i = z_i + hm_i;
                 else
                     log_data{prof_num}{counter_2} = ...
-                        dictionary(["hm_i","zm_i","um_i","wm_i"],...
+                        dictionary(["hm_i[m]","zm_i[m]","um_i[m/s]","wm_i[m/s]"],...
                         [obj.z(end)-z_i, 0.5*(z_i+obj.z(end)), um_i, wm_i]);
                     Gen_u_prof(z_ind:end, prof_num) = um_i;
                     Gen_w_prof(z_ind:end, prof_num) = wm_i;
@@ -55,11 +55,7 @@ function [Gen_u_prof, Gen_w_prof, log_data] = SG_VelProf(obj)
                         prof_num, numel(rand_u), counter_1);
                 end
             end
-            if mod(prof_num, 5000) == 0
-                elapsedTime = toc;  % Elapsed time up to the checkpoint
-                estimatedRemainingTime = (obj.N_prof - prof_num) * (elapsedTime);
-                fprintf(['Estimated remaining time for stochastic profile generation:' ...
-                    '%.2f minutes\n'], estimatedRemainingTime/60);
-            end
+            progressbar((prof_num)/obj.N_prof)
+
         end
 end

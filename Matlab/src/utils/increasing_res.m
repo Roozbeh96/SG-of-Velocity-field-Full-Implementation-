@@ -10,9 +10,9 @@ function increasing_res(obj, L0, factor)
 
     obj.Gen_x_LRVF = 0:obj.Delta_x:(L)*obj.Delta_x;
 
-    
+    progressbar('Increasing Resolution')
     for S= 1:Numrator
-        tic;
+
         ucroped = obj.Gen_u_LRVF(:, (S-1)*L+1:(S)*L+1);
         wcroped = obj.Gen_w_LRVF(:, (S-1)*L+1:(S)*L+1);
     
@@ -24,11 +24,7 @@ function increasing_res(obj, L0, factor)
                 obj.Gen_x_HRVF, 'makima');
         end
 
-        if mod(S, 100) == 0
-            elapsedTime = toc;  % Elapsed time up to the checkpoint
-            estimatedRemainingTime = (Numrator - S) * (elapsedTime);
-            fprintf('Estimated remaining time for increasing resolution: %.2f minutes\n', estimatedRemainingTime/60);
-        end
+        progressbar((S)/Numrator)
     end
 
 end
