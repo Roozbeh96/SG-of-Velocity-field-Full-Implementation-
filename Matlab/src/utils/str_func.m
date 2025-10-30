@@ -19,7 +19,7 @@ function str_func(obj)
     end
     
     for S = 1:Numb_frame
-        for elev = 1:size(obj.z,1)
+        for elev = 1:size(obj.z,2)
             for r=0:size(obj.r11,2)-1
                 obj.D11(elev,r+1,S)=mean((concat_uprime(elev,(S-1)*win12del+1:S*win12del+1-r)-...
                     concat_uprime(elev,(S-1)*win12del+1+r:S*win12del+1)).^2,2);

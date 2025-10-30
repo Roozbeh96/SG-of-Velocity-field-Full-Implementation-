@@ -153,9 +153,9 @@ function SG_VorX(obj, u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
                     min(cols), max(cols)];
                 ix = ix + 1;
             end
-
-            xcs = obj.Gen_x_HRVF(centroids(:, 2));
+            
             zcs = obj.z(centroids(:, 1));
+            xcs = obj.Gen_x_HRVF(centroids(:, 2));
             rot = centroids(:, 3);
             Numb_vortices  = size(centroids,1);
             pro_counter = 1; %counter for lambda_ci prograde vortices

@@ -122,3 +122,7 @@ Gen_sample.Gauss_kernel(0.4,0.4, [Gen_sample.lambda*0.00001 0;...
 
 Gen_sample.Spectral_analysis
 Gen_sample.Structure_function
+
+%% Saving
+
+save('Gen_sample.mat','Gen_sample')
