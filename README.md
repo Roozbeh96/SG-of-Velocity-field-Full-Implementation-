@@ -47,7 +47,8 @@ All the code files are in `Matlab/src` folder:
 ## Python package
 <!-- brief blurb or link to docs/install/usage -->
 <details>
-<summary> Installation:</summary>
+<summary> Installation:
+</summary>
 
 1. 🛠️ Installing Poetry
 
@@ -96,9 +97,7 @@ poetry new project_name
 
 ### Python files
 
-</details>
-
-</details>
+-Explanation about the files:
 
 ## Stochatically Generated Velocity Field
 <img src = "Gen.gif">
