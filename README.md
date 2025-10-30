@@ -47,10 +47,6 @@ All the code files are in `Matlab/src` folder:
 ## Python package
 <!-- brief blurb or link to docs/install/usage -->
 <details>
-  <summary>Click to see the documentation for Python files</summary>
-
-### Python files
-<details>
 <summary> Installation:</summary>
 
 1. 🛠️ Installing Poetry
@@ -94,6 +90,11 @@ In case if you want to make environment from scratch, run:(Do not recommended)
 poetry new project_name
 ```
 </details>
+
+<details>
+  <summary>Click to see the documentation for Python files</summary>
+
+### Python files
 
 </details>
 
