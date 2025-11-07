@@ -1,9 +1,9 @@
 %{
 To Stochatically Generate Velocity Profiles (SGVP), reorganize, and add vortex
 cores, you need to provide initial physical parameters such as
-u_{tau}(friction velocity), z_{0}(aerodynamic roughness length),
-delta(boundary layer thickness), lambda(Taylor micro-scale). The details 
-about the rest of the parameter will be providing the following lines.
+u_{tau}[m/s](friction velocity), z_{0}[m](aerodynamic roughness length),
+delta[m](boundary layer thickness), lambda[m](Taylor micro-scale). The details 
+about the rest of the parameter will be providing in the following lines.
 If you need details about the statistics, refer to the following papers:
 
 **For SG of Velocity Profiles:
@@ -114,9 +114,13 @@ Gen_sample.SGVorX(u_wOu_tau_near, r_wOlambda_T_near, rho_uw_VorX_near,...
     u_wOu_tau_far, r_wOlambda_T_far, rho_uw_VorX_far)
 
 %% Passing smoothing filter
+kern_xsize = 0.4;
+kern_ysize = 0.4;
+Sigma = [Gen_sample.lambda*0.00001 0;...
+    0 Gen_sample.lambda*0.00001];
 
-Gen_sample.Gauss_kernel(0.4,0.4, [Gen_sample.lambda*0.00001 0;...
-    0 Gen_sample.lambda*0.00001])
+
+Gen_sample.Gauss_kernel(kern_xsize, kern_ysize, Sigma)
 
 %% Spectral and structure function analysis
 

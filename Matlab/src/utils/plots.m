@@ -1,4 +1,8 @@
+%% Load data
+load("Gen_sample.mat")
+
 %% plot first and second moments of statistics Generated profiles
+kappa = 0.39;
 figure
 subplot(4,1,1)
 plot(mean(Gen_sample.Gen_u_prof,2)/Gen_sample.u_tau,...

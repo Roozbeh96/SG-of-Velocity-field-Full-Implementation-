@@ -10,7 +10,7 @@ function [Gen_u_prof_reorg, Gen_w_prof_reorg, hist_corr] = SG_VelField(obj)
     %{
       Size of storage is Reynold's number dependent. 
     %}
-    NP_storage=10^ceil(log10(10*sqrt(obj.u_tau*obj.delta/obj.nu)));
+    NP_storage=ceil(10*sqrt(obj.u_tau*obj.delta/obj.nu));
     size_reorg_VField=size(obj.Gen_u_prof,2)-NP_storage;
 
 

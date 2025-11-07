@@ -28,16 +28,25 @@ All the code files are in `Matlab/src` folder:
 
 `Matlab/src`
 - main.m: defining initial conditions. The documentation for the code is provided in the files as comments.
-- stochastic_generation: defining an object and transfers to different functions
+- stochastic_generation.m: defining an object and transfers to different functions
 
-`Matlab/src/utils/SG_VelProf`
+`Matlab/src/utils/SG_VelProf.m`
 - SGVP: codes to generate velocity profiles.
 
-`Matlab/src/utils/SG_VelField`
+`Matlab/src/utils/SG_VelField.m`
 - SGVF: codes to reorganize the generated profiles into correlated field.
 
-`Matlab/src/utils/SG_VorX`
+`Matlab/src/utils/SG_VorX.m`
 - SGVorX: codes to add vortex cores.
+
+`Matlab/src/utils/Lambda_ci`
+- Lambda_ci: In this function, swirling strength and the vorticity of the generated velocity field are calculated. 
+
+`Matlab/src/utils/spec_analysis`
+- spec_analysis.m: In this function, Energy density spectrum ($E_{11}$) of the generated velocity field.
+
+`Matlab/src/utils/str_func`
+- str_func.m: In this function, structure function ($D_{11}$) of the generated velocity field.
 
 `Matlab/src/utils/plots`
 - Plots: After generating the object, plot the statistics of the generated field.
