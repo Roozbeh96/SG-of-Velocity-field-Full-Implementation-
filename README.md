@@ -43,7 +43,7 @@ All the code files are in `Matlab/src` folder:
 - Lambda_ci: In this function, swirling strength and the vorticity of the generated velocity field are calculated. 
 
 `Matlab/src/utils/spec_analysis`
-- spec_analysis.m: In this function, Energy density spectrum ($E_{11}$) of the generated velocity field.
+- spec_analysis.m: In this function, Power spectrum density ($E_{11}$) of the generated velocity field.
 
 `Matlab/src/utils/str_func`
 - str_func.m: In this function, structure function ($D_{11}$) of the generated velocity field.
