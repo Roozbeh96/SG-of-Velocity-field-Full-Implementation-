@@ -23,7 +23,14 @@ function Lambda_ci(obj)
         progressbar((S)/size(obj.Lambda_ci,3))
       
     end
+    Lambda_cirms_ = zeros(size(obj.Lambda_ci,1),1);
+    for z_ = 1:size(obj.Lambda_ci,1)
+        temp_ = obj.Lambda_ci(z_,:,:);
+        temp_ = temp_(temp_~=0);
+        Lambda_cirms_(z_,1) = std(temp_,0,1);
+    end
     
-    obj.Lambda_cirms = mean(std(obj.Lambda_ci,0,3),2);
+    
+    obj.Lambda_cirms = Lambda_cirms_;
 end
 
